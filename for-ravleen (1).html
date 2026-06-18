@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Ravleen — a little something before Saturday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#150d2e;
+    --night-2:#241245;
+    --plum:#3a1f5c;
+    --rose:#e8a87c;
+    --rose-bright:#f4c4a0;
+    --gold:#e6b450;
+    --blush:#f7e9e3;
+    --lav:#b8a9d9;
+    --line:rgba(232,168,124,.22);
+    --glass:rgba(255,255,255,.045);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    color:var(--blush);
+    background:
+      radial-gradient(1200px 800px at 75% -10%, #4a2a6e 0%, transparent 55%),
+      radial-gradient(1000px 700px at 10% 110%, #5c2f4a 0%, transparent 50%),
+      linear-gradient(160deg,#150d2e 0%, #1d1138 45%, #2a1442 100%);
+    min-height:100vh;overflow-x:hidden;position:relative;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* ambient stars */
+  #sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .twinkle{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.5;animation:tw 4s infinite ease-in-out}
+  @keyframes tw{0%,100%{opacity:.15;transform:scale(.8)}50%{opacity:.9;transform:scale(1.3)}}
+
+  .wrap{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:48px 24px;
+    min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+  .stage{width:100%;display:none;animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+  .stage.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-size:.72rem;letter-spacing:.42em;text-transform:uppercase;color:var(--rose);
+    font-weight:500;margin-bottom:18px}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.02;
+    font-size:clamp(2.6rem,8vw,4.6rem);letter-spacing:-.01em}
+  h1 em{font-style:italic;color:var(--rose-bright)}
+  .lead{font-weight:300;color:var(--lav);font-size:clamp(1rem,2.6vw,1.18rem);
+    line-height:1.7;margin-top:22px;max-width:46ch}
+  .lead b{color:var(--blush);font-weight:400}
+
+  .sig{margin-top:30px;font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:1.35rem;color:var(--gold)}
+  .sig span{display:block;font-family:'Space Grotesk';font-style:normal;font-size:.7rem;
+    letter-spacing:.3em;text-transform:uppercase;color:var(--lav);margin-top:6px}
+
+  .btn{appearance:none;border:1px solid var(--line);background:var(--glass);color:var(--blush);
+    font-family:'Space Grotesk';font-size:.92rem;font-weight:500;letter-spacing:.04em;
+    padding:15px 30px;border-radius:100px;cursor:pointer;margin-top:38px;
+    backdrop-filter:blur(8px);transition:.35s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden}
+  .btn:hover{border-color:var(--rose);transform:translateY(-2px);
+    box-shadow:0 14px 40px -16px rgba(232,168,124,.6)}
+  .btn.glow{background:linear-gradient(120deg,var(--rose),var(--gold));color:#2a1230;border-color:transparent;font-weight:600}
+  .btn:focus-visible{outline:2px solid var(--rose-bright);outline-offset:3px}
+
+  /* constellation progress */
+  .constel{margin:0 auto 6px;display:block}
+  .c-line{stroke:var(--rose);stroke-width:1;opacity:0;transition:opacity .7s .15s,stroke-dashoffset 1s}
+  .c-line.on{opacity:.5}
+  .c-node{fill:#fff;opacity:.18;transition:.6s}
+  .c-node.on{opacity:1;fill:var(--rose-bright);filter:drop-shadow(0 0 6px var(--rose))}
+  .step-label{font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;color:var(--lav);
+    text-align:center;margin-bottom:24px}
+
+  .q{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,6vw,3rem);font-weight:500;
+    text-align:center;line-height:1.1;margin-bottom:8px}
+  .q em{font-style:italic;color:var(--rose-bright)}
+  .q-sub{text-align:center;color:var(--lav);font-weight:300;font-size:.92rem;margin-bottom:34px}
+
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:560px;margin:0 auto}
+  .choice{border:1px solid var(--line);background:var(--glass);border-radius:20px;
+    padding:34px 18px;text-align:center;cursor:pointer;backdrop-filter:blur(8px);
+    transition:.35s cubic-bezier(.2,.8,.2,1);position:relative}
+  .choice:hover{transform:translateY(-4px);border-color:var(--rose);
+    box-shadow:0 18px 50px -22px rgba(232,168,124,.65)}
+  .choice .ic{font-size:2.1rem;display:block;margin-bottom:12px}
+  .choice .lab{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500}
+  .choice:focus-visible{outline:2px solid var(--rose-bright);outline-offset:3px}
+  .choice.picked{border-color:var(--gold);background:linear-gradient(140deg,rgba(232,168,124,.18),rgba(230,180,80,.08))}
+
+  .field{max-width:520px;margin:0 auto}
+  .field input,.field textarea{width:100%;background:var(--glass);border:1px solid var(--line);
+    color:var(--blush);font-family:'Space Grotesk';font-size:1rem;padding:16px 18px;border-radius:14px;
+    margin-top:14px;resize:none;transition:.3s}
+  .field input::placeholder,.field textarea::placeholder{color:rgba(184,169,217,.55)}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--rose);
+    box-shadow:0 0 0 3px rgba(232,168,124,.14)}
+
+  .pillrow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:560px;margin:0 auto}
+  .pill{border:1px solid var(--line);background:var(--glass);color:var(--blush);font-family:'Space Grotesk';
+    font-size:.95rem;padding:13px 22px;border-radius:100px;cursor:pointer;transition:.3s;backdrop-filter:blur(8px)}
+  .pill:hover{border-color:var(--rose);transform:translateY(-2px)}
+  .pill.picked{background:linear-gradient(120deg,var(--rose),var(--gold));color:#2a1230;border-color:transparent;font-weight:600}
+  .pill:focus-visible{outline:2px solid var(--rose-bright);outline-offset:3px}
+
+  .center{text-align:center}
+  .summary{max-width:540px;margin:30px auto 0;border:1px solid var(--line);border-radius:22px;
+    background:var(--glass);backdrop-filter:blur(10px);padding:26px 26px 10px;text-align:left}
+  .summary .row{display:flex;justify-content:space-between;gap:18px;padding:11px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);font-size:.95rem}
+  .summary .row:last-child{border-bottom:none}
+  .summary .k{color:var(--lav);font-weight:300}
+  .summary .v{color:var(--rose-bright);font-weight:500;text-align:right}
+  .toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);
+    background:linear-gradient(120deg,var(--rose),var(--gold));color:#2a1230;font-weight:600;
+    padding:13px 24px;border-radius:100px;opacity:0;transition:.4s;z-index:9;pointer-events:none;font-size:.9rem}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .footnote{margin-top:30px;font-size:.78rem;color:rgba(184,169,217,.6);text-align:center;font-weight:300}
+
+  @media (max-width:620px){
+    .wrap{padding:36px 18px;justify-content:flex-start}
+    .summary{padding:22px 20px 8px}
+    .summary .row{font-size:.9rem;gap:12px}
+    .pill{padding:12px 18px;font-size:.9rem}
+  }
+  @media (max-width:520px){
+    .choices{gap:12px}
+    .choice{padding:26px 12px}
+    .choice .ic{font-size:1.8rem}
+    .choice .lab{font-size:1.3rem}
+    .btn{width:100%}
+    .eyebrow{font-size:.66rem;letter-spacing:.3em}
+    .lead{margin-top:18px}
+    .constel{width:100%;height:auto;max-width:220px}
+  }
+  @media (max-width:380px){
+    .wrap{padding:28px 14px}
+    .choices{grid-template-columns:1fr}
+    .summary .row{flex-direction:column;gap:2px}
+    .summary .v{text-align:left}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001s!important;transition-duration:.12s!important}
+    .twinkle{animation:none;opacity:.4}
+  }
+</style>
+</head>
+<body>
+<div id="sky" aria-hidden="true"></div>
+
+<div class="wrap">
+
+  <!-- INTRO -->
+  <section class="stage active" id="s-intro">
+    <div class="eyebrow">Saturday, evening &nbsp;•&nbsp; just so I plan it right</div>
+    <h1>Hi <em>Ravleen</em>.<br>Before we meet…</h1>
+    <p class="lead">I'm Vikrant — I build things for a living, so naturally I built you a tiny one. <b>Eight quick taps and a couple of words.</b> Every answer lights a star, and by the end we'll have made a little constellation together — plus I'll know exactly how to make Saturday feel like <em>you</em>.</p>
+    <div class="sig">No wrong answers. Only honest ones.
+      <span>takes about a minute</span></div>
+    <button class="btn glow" onclick="go(0)">Light the first star →</button>
+  </section>
+
+  <!-- QUIZ + EXTRAS rendered here -->
+  <section class="stage" id="s-quiz">
+    <svg class="constel" id="constel" width="220" height="64" viewBox="0 0 220 64" aria-hidden="true"></svg>
+    <div class="step-label" id="steplab">Star 1 of 8</div>
+    <div id="qbody"></div>
+  </section>
+
+  <!-- REVEAL -->
+  <section class="stage" id="s-reveal">
+    <div class="eyebrow center">Your constellation is complete</div>
+    <h1 class="center" style="margin-bottom:10px">So, <em>Saturday?</em></h1>
+    <p class="lead center" style="margin:14px auto 0">Here's what the stars told me about you. Now help me pick the evening — and if it all sounds good, you can send this whole thing straight to me.</p>
+
+    <div id="planpick" style="margin-top:34px"></div>
+    <div class="summary" id="summaryBox"></div>
+
+    <div class="center">
+      <button class="btn glow" id="sendBtn" onclick="copyNote()">Send my answers to Vikrant ♡</button>
+    </div>
+    <p class="footnote">This copies a little note with all your picks — paste it back to me and I'll take it from there.</p>
+  </section>
+</div>
+
+<div class="toast" id="toast">Copied — now paste it to Vikrant ♡</div>
+
+<script>
+/* ---------- ambient stars ---------- */
+(function(){
+  const sky=document.getElementById('sky');
+  const n=window.innerWidth<600?34:60;
+  for(let i=0;i<n;i++){
+    const s=document.createElement('div');s.className='twinkle';
+    s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=(Math.random()*4)+'s';
+    s.style.opacity=(Math.random()*.5+.2);
+    sky.appendChild(s);
+  }
+})();
+
+/* ---------- data ---------- */
+const Q=[
+  {key:'Mornings',q:'How do you take the world?',sub:'the small daily ritual',a:{ic:'☕',lab:'Coffee'},b:{ic:'🍵',lab:'Chai'}},
+  {key:'Escape',q:'When you need to <em>breathe</em>…',sub:'where do you go in your head',a:{ic:'⛰️',lab:'Mountains'},b:{ic:'🌊',lab:'The ocean'}},
+  {key:'Clock',q:'You come alive at…',sub:'be honest',a:{ic:'🌙',lab:'Late nights'},b:{ic:'🌅',lab:'Early mornings'}},
+  {key:'Plans',q:'The perfect plan is…',sub:'',a:{ic:'🗺️',lab:'Mapped out'},b:{ic:'🎲',lab:'Spontaneous'}},
+  {key:'Evenings',q:'An ideal evening?',sub:'',a:{ic:'🛋️',lab:'Cozy in'},b:{ic:'✨',lab:'Out & about'}},
+  {key:'Flavour',q:'Your kind of plate is…',sub:'so I order right',a:{ic:'🍫',lab:'Sweet'},b:{ic:'🌶️',lab:'Spicy'}},
+  {key:'Sound',q:'On the drive, you want…',sub:'',a:{ic:'🎙️',lab:'Old soul'},b:{ic:'🎧',lab:'New beats'}},
+  {key:'Story',q:'You\'d rather get lost in…',sub:'',a:{ic:'📖',lab:'A book'},b:{ic:'🎬',lab:'A film'}}
+];
+const answers={};
+
+/* ---------- constellation node positions ---------- */
+const NODES=[[18,40],[44,18],[72,46],[100,22],[128,44],[156,16],[184,42],[206,24]];
+(function buildConstel(){
+  const svg=document.getElementById('constel');
+  let lines='',nodes='';
+  for(let i=1;i<NODES.length;i++){
+    lines+=`<line class="c-line" id="l${i}" x1="${NODES[i-1][0]}" y1="${NODES[i-1][1]}" x2="${NODES[i][0]}" y2="${NODES[i][1]}"/>`;
+  }
+  for(let i=0;i<NODES.length;i++){
+    nodes+=`<circle class="c-node" id="cn${i}" cx="${NODES[i][0]}" cy="${NODES[i][1]}" r="3"/>`;
+  }
+  svg.innerHTML=lines+nodes;
+})();
+
+/* ---------- flow ---------- */
+const stages={intro:'s-intro',quiz:'s-quiz',reveal:'s-reveal'};
+function show(id){document.querySelectorAll('.stage').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+let qi=0;
+function go(i){
+  qi=i;
+  show('s-quiz');
+  renderQ();
+}
+function renderQ(){
+  const item=Q[qi];
+  document.getElementById('steplab').textContent=`Star ${qi+1} of 8`;
+  document.getElementById('qbody').innerHTML=`
+    <div class="q">${item.q}</div>
+    <div class="q-sub">${item.sub||'&nbsp;'}</div>
+    <div class="choices">
+      <button class="choice" onclick="pick('${item.key}','${item.a.lab}')">
+        <span class="ic">${item.a.ic}</span><span class="lab">${item.a.lab}</span></button>
+      <button class="choice" onclick="pick('${item.key}','${item.b.lab}')">
+        <span class="ic">${item.b.ic}</span><span class="lab">${item.b.lab}</span></button>
+    </div>`;
+  // light current node
+  document.getElementById('cn'+qi).classList.add('on');
+}
+function pick(key,val){
+  answers[key]=val;
+  // mark picked
+  event.currentTarget.classList.add('picked');
+  // light the connecting line
+  if(qi>0)document.getElementById('l'+qi).classList.add('on');
+  setTimeout(()=>{
+    qi++;
+    if(qi<Q.length){renderQ();}
+    else{renderExtras();}
+  },360);
+}
+
+/* ---------- open-ended extras ---------- */
+function renderExtras(){
+  document.getElementById('steplab').textContent='Two more, in your own words';
+  document.getElementById('qbody').innerHTML=`
+    <div class="q">In your <em>words</em></div>
+    <div class="q-sub">the part a quiz can't guess</div>
+    <div class="field">
+      <input id="love" placeholder="One thing that instantly makes your day…">
+      <textarea id="nope" rows="2" placeholder="One absolute no for you — be ruthless"></textarea>
+      <input id="craving" placeholder="What are you craving to eat lately?">
+    </div>
+    <div class="center">
+      <button class="btn glow" onclick="finishExtras()">Almost there →</button>
+    </div>`;
+}
+function finishExtras(){
+  answers['Loves']=val('love')||'kept it a mystery';
+  answers['A hard no']=val('nope')||'nothing she\'d admit';
+  answers['Craving']=val('craving')||'open to ideas';
+  show('s-reveal');
+  renderReveal();
+}
+function val(id){return (document.getElementById(id).value||'').trim();}
+
+/* ---------- reveal / plan ---------- */
+const PLAN_TIME=['6:00','7:00','8:00'];
+const PLAN_VIBE=[
+  {k:'Rooftop dinner',ic:'🌃'},
+  {k:'Coffee & a long walk',ic:'🚶'},
+  {k:'Something live',ic:'🎶'},
+  {k:'Surprise me',ic:'🎁'}
+];
+function renderReveal(){
+  const pp=document.getElementById('planpick');
+  pp.innerHTML=`
+    <div class="q" style="font-size:clamp(1.5rem,5vw,2.2rem)">Pick our <em>time</em></div>
+    <div class="pillrow" id="timeRow">
+      ${PLAN_TIME.map(t=>`<button class="pill" onclick="setPill('Time',this,'${t} PM')">${t} PM</button>`).join('')}
+    </div>
+    <div class="q" style="font-size:clamp(1.5rem,5vw,2.2rem);margin-top:30px">…and the <em>vibe</em></div>
+    <div class="pillrow" id="vibeRow">
+      ${PLAN_VIBE.map(v=>`<button class="pill" onclick="setPill('Vibe',this,'${v.k}')">${v.ic} ${v.k}</button>`).join('')}
+    </div>`;
+  drawSummary();
+}
+function setPill(key,el,val){
+  answers[key]=val;
+  el.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('picked'));
+  el.classList.add('picked');
+  drawSummary();
+}
+function drawSummary(){
+  const order=['Mornings','Escape','Clock','Plans','Evenings','Flavour','Sound','Story','Loves','A hard no','Craving','Time','Vibe'];
+  const box=document.getElementById('summaryBox');
+  box.innerHTML=order.filter(k=>answers[k]).map(k=>
+    `<div class="row"><span class="k">${k}</span><span class="v">${escapeHtml(answers[k])}</span></div>`
+  ).join('') || '<div class="row"><span class="k">Nothing yet</span></div>';
+}
+function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+/* ---------- copy note ---------- */
+function copyNote(){
+  const lines=[
+    'Hi Vikrant — here\'s what your little app got out of me ♡','',
+    `☕ Mornings: ${answers['Mornings']||'-'}`,
+    `🌍 Escape: ${answers['Escape']||'-'}`,
+    `🕯️ Alive at: ${answers['Clock']||'-'}`,
+    `🗺️ Plans: ${answers['Plans']||'-'}`,
+    `🌆 Evenings: ${answers['Evenings']||'-'}`,
+    `🍽️ Flavour: ${answers['Flavour']||'-'}`,
+    `🎵 Sound: ${answers['Sound']||'-'}`,
+    `📚 Story: ${answers['Story']||'-'}`,'',
+    `💛 Makes my day: ${answers['Loves']||'-'}`,
+    `🚫 Hard no: ${answers['A hard no']||'-'}`,
+    `🍴 Craving: ${answers['Craving']||'-'}`,'',
+    `📅 Saturday — Time: ${answers['Time']||'(you pick)'} | Vibe: ${answers['Vibe']||'(you pick)'}`,'',
+    'See you then. — Ravleen'
+  ].join('\n');
+  navigator.clipboard.writeText(lines).then(showToast).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=lines;document.body.appendChild(ta);
+    ta.select();document.execCommand('copy');ta.remove();showToast();
+  });
+}
+function showToast(){const t=document.getElementById('toast');t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);}
+</script>
+</body>
+</html>
